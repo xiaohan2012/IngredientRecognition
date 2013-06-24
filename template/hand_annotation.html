@@ -2,7 +2,7 @@
 
 {%block content%}
 </style>
-<table class="table table-striped">
+<table class="table table-striped" id="ingredients">
   <thead>
     <tr>
       <th class="span10">
@@ -19,7 +19,7 @@
       <td>
 	{% for word in row.content%}
 	<div class="btn-group ingredient">
-	  <button class="btn dropdown-toggle ing-name-btn" data-toggle="dropdown" href="#">
+	  <button class="btn dropdown-toggle ing-name" data-toggle="dropdown" href="#">
 	    {{ word }}
 	    <span class="caret"></span>
 	  </button>
@@ -51,5 +51,5 @@
 
 {%block js%}
 {{ super() }}
-<script src="js/first_level.js"></script>
+<script src="js/coarse.js"></script>
 {%endblock%}
