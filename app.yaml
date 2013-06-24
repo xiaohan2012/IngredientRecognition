@@ -1,0 +1,32 @@
+application: ingredient-annotation-platform
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+
+- url: /js
+  static_dir: template/js
+
+- url: /style
+  static_dir: template/style
+
+- url: /bootstrap
+  static_dir: template/bootstrap
+      
+- url: /jquery-ui
+  static_dir: template/jquery-ui
+
+- url: /hand/.*
+  script: hand_annotation.application
+
+- url: /bulk/.*
+  script: bulk_operation.application
+
+- url: /.*
+  script: hand_annotation.application
+
+libraries:
+- name: jinja2
+  version: latest

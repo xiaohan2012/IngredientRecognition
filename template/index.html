@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ingredient Annotation Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet" media="screen">
+
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+	<div class="container">
+	  <a class="brand" href="#">
+	    Ingredient Annotation Platform
+	  </a>
+	  <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active dropdown">
+		<a class="dropdown-toggle" data-toggle="dropdown">
+		  Coarser
+                  <i class="caret"></i>
+		</a>
+		<ul class="dropdown-menu">
+                  <li>
+                    <a>To do</a>
+                    <a>History</a>
+                  </li>
+		</ul>
+	      </li>
+              <li><a>Finer</a></li>
+            </ul>
+	  </div>
+	</div>
+      </div>
+    </div>
+    <div class="container">
+      <table class="table table-striped">
+          <thead>
+              <tr>
+                  <th class="span10">
+		    Word Sequence
+                  </th>
+                  <th class="span2">
+		    Operation
+                  </th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>
+		    <div class="btn-group">
+		      <button class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+			一坨
+			<span class="caret"></span>
+		      </button>
+		      <ul class="dropdown-menu">
+                        <li><a>Begin</a></li>
+                        <li><a>Continue</a></li>
+                        <li><a>Split</a></li>
+		      </ul>
+		    </div>
+		    <div class="btn-group">
+		      <button class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+			牛肉
+			<span class="caret"></span>
+			<span class="badge badge-success">B</span>
+		      </button>
+		      <ul class="dropdown-menu">
+                        <li><a>Begin</a></li>
+                        <li><a>Continue</a></li>
+                        <li><a>Split</a></li>
+		      </ul>
+		    </div>
+		    <div class="btn-group">
+		      <button class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+			块
+			<span class="caret"></span>
+			<span class="badge badge-info">C</span>
+		      </button>
+		      <ul class="dropdown-menu">
+                        <li><a>Begin</a></li>
+                        <li><a>Continue</a></li>
+                        <li><a>Split</a></li>
+		      </ul>
+		    </div>
+                  </td>
+                  <td>
+                    <button class="btn btn-primary btn-small">
+		      Submit
+                    </button>
+                    <button class="btn btn-small">
+		      Ignore
+                    </button>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+    <script src="jquery-ui/jquery-1.9.1.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>

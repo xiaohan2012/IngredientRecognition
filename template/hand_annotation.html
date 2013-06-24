@@ -1,0 +1,55 @@
+{%extends "base.html"%}
+
+{%block content%}
+</style>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="span10">
+	Word Sequence
+      </th>
+      <th class="span2">
+	Operation
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>
+	{% for word in row.content%}
+	<div class="btn-group ingredient">
+	  <button class="btn dropdown-toggle ing-name-btn" data-toggle="dropdown" href="#">
+	    {{ word }}
+	    <span class="caret"></span>
+	  </button>
+	  <ul class="dropdown-menu">
+            <li><a class="as-begin">Begin</a></li>
+            <li><a class="as-continue">Continue</a></li>
+            <li><a class="split-word">Split</a></li>
+            <li><a class="merge-words">Merge</a></li>
+            <li><a class="untag">Untag</a></li>
+	  </ul>
+	</div>
+	{% endfor %}
+      </td>
+      <td>
+        <button class="btn btn-primary btn-small">
+	  Submit
+        </button>
+        <button class="btn btn-small">
+	  Ignore
+        </button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{%endblock%}
+
+{%block js%}
+{{ super() }}
+<script src="js/first_level.js"></script>
+{%endblock%}

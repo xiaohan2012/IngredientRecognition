@@ -1,0 +1,30 @@
+#container ul {
+    list-style-type: none;
+}
+
+#container > ul > li {
+    display: block;
+    margin-top:20px;
+}
+
+ul.selectable li{
+    float:left;
+    margin-top:10px;
+}
+
+.word{
+    padding:2px 4px;
+    margin:4px 4px;
+}
+
+.clear{
+    clear:both;
+}
+
+.ui-selecting { background: #FECA40; }
+.ui-selected { background: #F39814; color: white; }
+
+.annotated { background: #006600; }
+
+.del-btn { opacity: 0.5; background: #999; display: inline; padding: 5px; cursor: pointer; margin-top: 10px;}
+.del-btn:hover {opacity: 1; }

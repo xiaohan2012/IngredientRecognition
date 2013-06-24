@@ -1,0 +1,67 @@
+<!DOCTYPE HTML
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{%block title%}Ingredient Annotation Platform{%endblock%}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {%block style %}
+  <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+  <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet" media="screen">
+  {%endblock%}
+
+
+</head>
+<body>
+    <div class="navbar">
+      <div class="navbar-inner">
+	<div class="container">
+	  <a class="brand" href="#">
+	    Ingredient Annotation Platform
+	  </a>
+	  <div class="nav-collapse">
+            <ul class="nav">
+              <li class="dropdown">
+		<a class="dropdown-toggle" data-toggle="dropdown">
+		  Coarser
+                  <i class="caret"></i>
+		</a>
+		<ul class="dropdown-menu">
+                  <li>
+                    <a>To do</a>
+                    <a>History</a>
+                  </li>
+		</ul>
+	      </li>
+              <li class="dropdown">
+		<a class="dropdown-toggle" data-toggle="dropdown">
+		  Finer
+                  <i class="caret"></i>
+		</a>
+		<ul class="dropdown-menu">
+                  <li>
+                    <a>To do</a>
+                    <a>History</a>
+                  </li>
+		</ul>
+	      </li>
+            </ul>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    <div class="container">
+    {%block content%}
+    {%endblock%}
+    </div>
+
+    <div id="footer"></div>
+
+    {%block js %}  
+    <script src="jquery-ui/jquery-1.9.1.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    {%endblock%}
+
+</body>
+</html>
