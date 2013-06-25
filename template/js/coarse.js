@@ -9,7 +9,30 @@ String.prototype.format = String.prototype.f = function() {
 };
 
 jQuery(function($){
+
     var tags = ["begin", "continue"];
+    var word_operation = ["split", "merge"];
+
+    $(".ingredient").each(function(){
+	var $dropdown = $("<ul class='dropdown-menu'>");
+	$.each(tags, function(i, tag){
+	    $("<a>", {
+		"class": "as-{0}".format(tag),
+		text: tag
+	    }).appendTo($dropdown);
+	});
+	
+	$.each(word_operation, function(i, oper){
+	    $("<a>", {
+		"class": "{0}-word".format(oper),
+		text: oper
+	    }).appendTo($dropdown);
+	});
+	
+	$dropdown.appendTo(this);
+	$(this).find(".dropdown-menu a").wrap("<li>");
+    });
+
     $.each(tags, function(i,tag){
 	$("#ingredients").on("click",".as-{0}".format(tag) , function(){
 	    $(this).getIngredientDiv().tagAs(tag);
