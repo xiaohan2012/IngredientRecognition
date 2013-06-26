@@ -8,69 +8,172 @@ String.prototype.format = String.prototype.f = function() {
     return s;
 };
 
-jQuery(function($){
+//possible tag info
+var tags = [
+    {
+	"name":"begin", 
+	"shortcut": "B"
+    },
+    {
+	"name": "continue",
+	"shortcut": "C"
+    }
+];
 
-    var tags = ["begin", "continue"];
-    var word_operation = ["split", "merge"];
+//operation on splitted words
+var word_operation = [
+    {
+	"name": "split",
+	"shortcut": "S",
+	"click": function() {
+	    
+	}
+    }, 
+    {
+	"name": "merge",
+	"shortcut": "M",
+	"click": function() {
 
-    $(".ingredient").each(function(){
+	}
+    }
+];
+
+jQuery.fn.justtext = function() {
+    //util, just the text of the jq, not its children's
+    return $(this).clone()
+        .children()
+        .remove()
+        .end()
+        .text();
+    
+};
+
+//utility function, create new ingredient
+jQuery.fn.appendIngredient = function(name){
+    var $ing = $("<div/>", {
+	"class": "btn-group ingredient"
+    }).append(
+	$("<button/>", {
+	    "class": "btn dropdown-toggle ing-name",
+	    "data-toggle": "dropdown",
+	    "text": name
+	}).append(
+	    $("<span class='caret'/>"))
+    ).load_dropdown_menu();
+    
+    return this.filter(".ingredient").each(function(){
+	$ing.insertAfter(this);
+    });
+};
+
+//dropdown menu for each word
+jQuery.fn.load_dropdown_menu = function(){
+    return this.filter(function(){
+	return $(this).is(".ingredient") && $(this).find(".dropdown-menu").length == 0;//no dropdown-menu loaded yet
+    }).each(function(){
 	var $dropdown = $("<ul class='dropdown-menu'>");
 	$.each(tags, function(i, tag){
 	    $("<a>", {
-		"class": "as-{0}".format(tag),
-		text: tag
+		"class": "as-{0}".format(tag.name),
+		text: tag.name
 	    }).appendTo($dropdown);
 	});
 	
 	$.each(word_operation, function(i, oper){
 	    $("<a>", {
-		"class": "{0}-word".format(oper),
-		text: oper
-	    }).appendTo($dropdown);
+		    "class": "{0}-word".format(oper.name),
+		text: oper.name
+		}).appendTo($dropdown);
 	});
 	
 	$dropdown.appendTo(this);
 	$(this).find(".dropdown-menu a").wrap("<li>");
+	
+	//add dropdown event on this ingredient
+	    $(this).find(".dropdown-toggle").dropdown();
     });
+};
 
+//utility functions, get useful jq objects
+$.fn.getTextButton = function(){
+    if (this.is(".ingredient")) return this.children("button.btn");
+    else if(this.is(".dropdown-menu")) return this.prev();
+    else if(this.is("li")) return this.parent().getTextButton();
+};
+
+$.fn.getIngredientDiv = function(){
+    return this.closest(".ingredient");
+}
+
+//tag operation function
+$.fn.tagAs = function(tagName) {
+    return this.filter(".ingredient").each(function(){
+	var $this = $(this);
+	if ( !$this.isTaggedAs(tagName)) //not tagged as `tagname` yet
+	    $("<span/>", {
+		"text": tagName.charAt(0).toUpperCase(),
+		"class": "badge badge-info tag is-{0}".format(tagName),
+	    }).appendTo($this.getTextButton());
+    });
+};
+
+//check if this word is tagged as `tagName`
+$.fn.isTaggedAs = function(tagName) {
+    return this.filter(".ingredient").has(".is-{0}".format(tagName)).length > 0;
+}
+
+//untag one word
+$.fn.untag = function(tagName) {
+    return this.filter(".ingredient").find(".is-{0}".format(tagName)).remove();
+}
+
+//restore to init state
+$.fn.untagAll = function() {
+    return this.filter(".ingredient").find(".tag").remove();
+}
+
+//split the word at `position`
+$.fn.split = function(position) {
+    return this.filter(".ingredient").each(function(){
+	var $this = $(this);
+	var name = $.trim($this.children("button.ing-name").justtext());
+	
+	var part1_name = name.substr(0, position);
+	var part2_name = name.substr(position, name.length);
+	
+	
+	//create jq and insert after this
+	$(this).appendIngredient(part2_name)
+	    .appendIngredient(part1_name)
+	    .remove();
+    });
+}
+
+var popup_splitword_window = function(word) {
+
+};
+
+jQuery(function($){
+    //add opearation dropdown menu for all words
+    $(".ingredient").load_dropdown_menu();
+
+    //attach event on tag button 
     $.each(tags, function(i,tag){
-	$("#ingredients").on("click",".as-{0}".format(tag) , function(){
-	    $(this).getIngredientDiv().tagAs(tag);
+	$("#ingredients").on("click",".as-{0}".format(tag.name) , function(){
+	    $(this).getIngredientDiv().tagAs(tag.name);
 	})
     });
     
-    $.fn.getTextButton = function(){
-	if (this.is(".ingredient")) return this.children("button.btn");
-	else if(this.is(".dropdown-menu")) return this.prev();
-	else if(this.is("li")) return this.parent().getTextButton();
-    };
+    //attach event on split and merge
+    $.each(word_operation, function(i, oper) {
+	$("#ingredients").on("click", ".{0}-word".format(oper), function(){
 
-    $.fn.getIngredientDiv = function(){
-	return this.closest(".ingredient");
-    }
-
-    $.fn.tagAs = function(tagName) {
-	return this.filter(".ingredient").each(function(){
-	    var $this = $(this);
-	    if ( !$this.isTaggedAs(tagName)) //not tagged as `tagname` yet
-		$("<span/>", {
-		    "text": tagName.charAt(0).toUpperCase(),
-		    "class": "badge badge-info tag is-{0}".format(tagName),
-		}).appendTo($this.getTextButton());
 	});
-    };
+    });
 
-    $.fn.isTaggedAs = function(tagName) {
-	return this.filter(".ingredient").has(".is-{0}".format(tagName)).length > 0;
-    }
-    
-    $.fn.untag = function(tagName) {
-	return this.filter(".ingredient").find(".is-{0}".format(tagName)).remove();
-    }
-
-    $.fn.untagAll = function() {
-	return this.filter(".ingredient").find(".tag").remove();
-    }
-    
+    //test case
     $(".ingredient").tagAs("feng");
+    $(".ingredient:eq(0)").appendIngredient("fengSB");
+    $(".ingredient:eq(0)").split(2);
+
 });
