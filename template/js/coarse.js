@@ -25,8 +25,27 @@ var word_operation = [
     {
 	"name": "split",
 	"shortcut": "S",
-	"click": function() {
+	"click": function(){
+	    var $btn = $(this).getTextButton();
 	    
+	    var text = $.trim($btn.justtext());
+
+	    if(text.length <= 1) return;//single char word, ignore
+
+	    $btn.hide();
+
+	    for(var i = text.length - 1; i >= 0; i--) {
+		var c = text.charAt(i);
+		$("<button/>", {
+		    "class": "btn btn-warning splitted-char",
+		    "text": c,
+		}).insertAfter($btn)
+		    .on("click", function(){
+			var $this = $(this);
+			$this.add($this.siblings(".splitted-char").filter(".btn-info"))
+			    .toggleClass("btn-warning btn-info");
+		    });
+	    }
 	}
     }, 
     {
@@ -38,18 +57,17 @@ var word_operation = [
     }
 ];
 
-jQuery.fn.justtext = function() {
+$.fn.justtext = function() {
     //util, just the text of the jq, not its children's
     return $(this).clone()
         .children()
         .remove()
         .end()
         .text();
-    
 };
 
 //utility function, create new ingredient
-jQuery.fn.appendIngredient = function(name){
+$.fn.appendIngredient = function(name){
     var $ing = $("<div/>", {
 	"class": "btn-group ingredient"
     }).append(
@@ -67,7 +85,7 @@ jQuery.fn.appendIngredient = function(name){
 };
 
 //dropdown menu for each word
-jQuery.fn.load_dropdown_menu = function(){
+$.fn.load_dropdown_menu = function(){
     return this.filter(function(){
 	return $(this).is(".ingredient") && $(this).find(".dropdown-menu").length == 0;//no dropdown-menu loaded yet
     }).each(function(){
@@ -98,7 +116,7 @@ jQuery.fn.load_dropdown_menu = function(){
 $.fn.getTextButton = function(){
     if (this.is(".ingredient")) return this.children("button.btn");
     else if(this.is(".dropdown-menu")) return this.prev();
-    else if(this.is("li")) return this.parent().getTextButton();
+    else if(this.is("li") || this.is("a")) return this.closest(".ingredient").getTextButton();
 };
 
 $.fn.getIngredientDiv = function(){
@@ -150,7 +168,7 @@ $.fn.split = function(position) {
 }
 
 var popup_splitword_window = function(word) {
-
+    
 };
 
 jQuery(function($){
@@ -161,19 +179,18 @@ jQuery(function($){
     $.each(tags, function(i,tag){
 	$("#ingredients").on("click",".as-{0}".format(tag.name) , function(){
 	    $(this).getIngredientDiv().tagAs(tag.name);
-	})
+	});
+	
     });
     
     //attach event on split and merge
     $.each(word_operation, function(i, oper) {
-	$("#ingredients").on("click", ".{0}-word".format(oper), function(){
-
-	});
+	$("#ingredients").on("click", ".{0}-word".format(oper.name), oper.click);
     });
-
+    
     //test case
     $(".ingredient").tagAs("feng");
     $(".ingredient:eq(0)").appendIngredient("fengSB");
     $(".ingredient:eq(0)").split(2);
-
+    $(".ingredient:eq(0) .split-word").click();
 });
