@@ -159,7 +159,6 @@ $.fn.split = function(position) {
 	var part1_name = name.substr(0, position);
 	var part2_name = name.substr(position, name.length);
 	
-	
 	//create jq and insert after this
 	$(this).appendIngredient(part2_name)
 	    .appendIngredient(part1_name)
@@ -191,33 +190,52 @@ jQuery(function($){
     //test case
     $(".ingredient").tagAs("feng");
     $(".ingredient:eq(0)").appendIngredient("fengSB");
-    $(".ingredient:eq(0)").split(2);
-    $(".ingredient:eq(0) .split-word").click();
+    //$(".ingredient:eq(0)").split(2);
+    //$(".ingredient:eq(0) .split-word").click();
 
     //keyboard navigation
     $(".ingredient").keynav();
 });
 
 (function($, window, document, undefined){
-    $.fn.keynav = function(){
+    $.fn.keynav = function() {
 	var current = this.filter(".current-word");
-	
-	if(current.length == 0) current = this.first();
-	
+
+	if(current.length == 0) {
+	    current = this.first();
+	    current.addClass("current-word");
+	}
+
+	current.children("button.ing-name").addClass("btn-warning");
+
 	function focusOnNext(){
-	    console.log(current);
-	    current.removeClass(".current-word").children("button.ing-name").removeClass("btn-warning");
+	    current.removeClass("current-word").children("button.ing-name").removeClass("btn-warning");
 
 	    var next = current.next();
-	    if(next) next = current.first();
+
+	    if(next.length==0) next = current.siblings().first();
 	    
-	    next.addClass(".current-word").children("button.ing-name").addClass("btn-warning");
+	    next.addClass("current-word").children("button.ing-name").addClass("btn-warning");
+
+	    current = next;
 	}
 	
+	function focusOnPrev(){
+	    current.removeClass("current-word").children("button.ing-name").removeClass("btn-warning");
+
+	    var prev = current.prev();
+
+	    if(prev.length==0) prev = current.siblings().last();
+	    
+	    prev.addClass("current-word").children("button.ing-name").addClass("btn-warning");
+
+	    current = prev;
+	}
+
 	$(document).keydown(function(e){
-	    console.log("fun");
 	    if (e.keyCode == 37) {
 		//left
+		focusOnPrev();
 	    }
 	    else if(e.keyCode = 39) {
 		//right
@@ -225,4 +243,10 @@ jQuery(function($){
 	    }
 	});
     };
+})(jQuery, window, document);
+
+(function($, window, document, undefined){
+    $.fn.keytag = function() {
+	
+    }
 })(jQuery, window, document);
