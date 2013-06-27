@@ -1,7 +1,11 @@
 {%extends "base.html"%}
 
+{%block style %}
+{{ super() }}
+<link href="style/style.css" rel="stylesheet" media="screen">
+{%endblock%}
+
 {%block content%}
-</style>
 <table class="table table-striped" id="ingredients">
   <thead>
     <tr>
@@ -38,8 +42,6 @@
     {% endfor %}
   </tbody>
 </table>
-
-
 {%endblock%}
 
 {%block js%}

@@ -193,4 +193,36 @@ jQuery(function($){
     $(".ingredient:eq(0)").appendIngredient("fengSB");
     $(".ingredient:eq(0)").split(2);
     $(".ingredient:eq(0) .split-word").click();
+
+    //keyboard navigation
+    $(".ingredient").keynav();
 });
+
+(function($, window, document, undefined){
+    $.fn.keynav = function(){
+	var current = this.filter(".current-word");
+	
+	if(current.length == 0) current = this.first();
+	
+	function focusOnNext(){
+	    console.log(current);
+	    current.removeClass(".current-word").children("button.ing-name").removeClass("btn-warning");
+
+	    var next = current.next();
+	    if(next) next = current.first();
+	    
+	    next.addClass(".current-word").children("button.ing-name").addClass("btn-warning");
+	}
+	
+	$(document).keydown(function(e){
+	    console.log("fun");
+	    if (e.keyCode == 37) {
+		//left
+	    }
+	    else if(e.keyCode = 39) {
+		//right
+		focusOnNext();
+	    }
+	});
+    };
+})(jQuery, window, document);
