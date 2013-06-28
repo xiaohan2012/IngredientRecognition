@@ -34,7 +34,7 @@
     }
 
     $.beginSelectSplitPosition = function() {
-	var $btn = $.getCurrent().getTextButton();
+	var $btn = $(".ingredient").getCurrent().getTextButton();
 	
 	var text = $.trim($btn.justtext());
 	
@@ -59,12 +59,12 @@
     
     //return true if user has began split point selection
     $.beganSplitPointSelection = function() {
-	return $.getCurrent().getTextButton().is(":hidden");
+	return $(".ingredient").getCurrent().getTextButton().is(":hidden");
     }
     
     //get the split point position
     $.getSplitPointPosition = function() {
-	var jq_chars = $.getCurrent().children(".splitted-char");
+	var jq_chars = $(".ingredient").getCurrent().children(".splitted-char");
 	var active = jq_chars.filter(".btn-info");
 	return jq_chars.index(active);
     }
@@ -72,7 +72,7 @@
     //when split operation ends, do the surface work
     $.endSplitWord = function() {
 	var pos = $.getSplitPointPosition();
-	$.getCurrent().split(pos);
+	$(".ingredient").getCurrent().split(pos);
     }
 })(jQuery, window, document);
 

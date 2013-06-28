@@ -128,7 +128,16 @@ jQuery(function($){
     //$(".ingredient:eq(0) .split-word").click();
 
     //keyboard navigation
-    $(".ingredient").keynav();
+    $(".ingredient").keynav({
+	target: ".ingredient",
+	focus: function(current){
+	    current.children("button.ing-name").addClass("btn-warning");
+	    current.addClass("keynav-current").children("button.ing-name").addClass("btn-warning");
+	},
+	blur: function(current){
+	    current.removeClass("keynav-current").children("button.ing-name").removeClass("btn-warning");
+	}
+    });
     
 
     $(".ingredient .ingname").keytag({

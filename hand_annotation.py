@@ -6,7 +6,7 @@ from model import IngredientRawText
 class MainPage(Handler):
 
     def get(self):
-        rows = IngredientRawText.gql("WHERE annotated=:annotated", annotated = False).fetch(1)
+        rows = IngredientRawText.gql("WHERE annotated=:annotated", annotated = False).fetch(3)
         self.render("hand_annotation.html", rows = rows)
         
     def post(self):
