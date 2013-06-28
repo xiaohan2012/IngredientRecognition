@@ -1,15 +1,9 @@
 (function($, window, document, undefined){
     $.fn.keynav = function() {
-	var current = this.filter(".current-word");
-
-	if(current.length == 0) {
-	    current = this.first();
-	    current.addClass("current-word");
-	}
-
-	current.children("button.ing-name").addClass("btn-warning");
-
+	
 	function focusOnNext(){
+	    var current = $.getCurrent();
+
 	    current.removeClass("current-word").children("button.ing-name").removeClass("btn-warning");
 
 	    var next = current.next();
@@ -18,10 +12,11 @@
 	    
 	    next.addClass("current-word").children("button.ing-name").addClass("btn-warning");
 
-	    current = next;
 	}
 	
 	function focusOnPrev(){
+	    var current = $.getCurrent();
+	    
 	    current.removeClass("current-word").children("button.ing-name").removeClass("btn-warning");
 
 	    var prev = current.prev();
@@ -30,7 +25,6 @@
 	    
 	    prev.addClass("current-word").children("button.ing-name").addClass("btn-warning");
 
-	    current = prev;
 	}
 
 	$(document).keydown(function(e){
@@ -48,8 +42,11 @@
 
     $.getCurrent = function(){
 	var cur = $(".ingredient").filter(".current-word");
-	if(cur.length == 0) 
-	    cur = this.first();
+	if(cur.length == 0) { //the one not appeared yet
+	    cur = $(".ingredient").first();
+	    cur.addClass("current-word");
+	    cur.children("button.ing-name").addClass("btn-warning");
+	}
 	return cur;
     };
 
