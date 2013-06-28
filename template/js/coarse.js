@@ -123,32 +123,6 @@ $.fn.getIngredientDiv = function(){
     return this.closest(".ingredient");
 }
 
-//tag operation function
-$.fn.tagAs = function(tagName) {
-    return this.filter(".ingredient").each(function(){
-	var $this = $(this);
-	if ( !$this.isTaggedAs(tagName)) //not tagged as `tagname` yet
-	    $("<span/>", {
-		"text": tagName.charAt(0).toUpperCase(),
-		"class": "badge badge-info tag is-{0}".format(tagName),
-	    }).appendTo($this.getTextButton());
-    });
-};
-
-//check if this word is tagged as `tagName`
-$.fn.isTaggedAs = function(tagName) {
-    return this.filter(".ingredient").has(".is-{0}".format(tagName)).length > 0;
-}
-
-//untag one word
-$.fn.untag = function(tagName) {
-    return this.filter(".ingredient").find(".is-{0}".format(tagName)).remove();
-}
-
-//restore to init state
-$.fn.untagAll = function() {
-    return this.filter(".ingredient").find(".tag").remove();
-}
 
 //split the word at `position`
 $.fn.split = function(position) {
@@ -188,65 +162,16 @@ jQuery(function($){
     });
     
     //test case
-    $(".ingredient").tagAs("feng");
-    $(".ingredient:eq(0)").appendIngredient("fengSB");
+    //$(".ingredient").tagAs("feng");
+    //$(".ingredient:eq(0)").appendIngredient("fengSB");
     //$(".ingredient:eq(0)").split(2);
     //$(".ingredient:eq(0) .split-word").click();
 
     //keyboard navigation
     $(".ingredient").keynav();
+
+    $(".ingredient .ingname").keytag({
+	"tags": tags
+    });
 });
 
-(function($, window, document, undefined){
-    $.fn.keynav = function() {
-	var current = this.filter(".current-word");
-
-	if(current.length == 0) {
-	    current = this.first();
-	    current.addClass("current-word");
-	}
-
-	current.children("button.ing-name").addClass("btn-warning");
-
-	function focusOnNext(){
-	    current.removeClass("current-word").children("button.ing-name").removeClass("btn-warning");
-
-	    var next = current.next();
-
-	    if(next.length==0) next = current.siblings().first();
-	    
-	    next.addClass("current-word").children("button.ing-name").addClass("btn-warning");
-
-	    current = next;
-	}
-	
-	function focusOnPrev(){
-	    current.removeClass("current-word").children("button.ing-name").removeClass("btn-warning");
-
-	    var prev = current.prev();
-
-	    if(prev.length==0) prev = current.siblings().last();
-	    
-	    prev.addClass("current-word").children("button.ing-name").addClass("btn-warning");
-
-	    current = prev;
-	}
-
-	$(document).keydown(function(e){
-	    if (e.keyCode == 37) {
-		//left
-		focusOnPrev();
-	    }
-	    else if(e.keyCode = 39) {
-		//right
-		focusOnNext();
-	    }
-	});
-    };
-})(jQuery, window, document);
-
-(function($, window, document, undefined){
-    $.fn.keytag = function() {
-	
-    }
-})(jQuery, window, document);
