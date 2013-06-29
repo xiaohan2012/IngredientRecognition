@@ -19,7 +19,8 @@
 
     //split the word at `position` and create new words
     $.fn.split = function(position) {
-	return this.filter(".ingredient").each(function(){
+	var first_ing = null;
+	this.filter(".ingredient").each(function(){
 	    var $this = $(this);
 	    var name = $.trim($this.children("button.ing-name").justtext());
 	    
@@ -29,12 +30,15 @@
 	    //create jq and insert after this
 	    $(this).appendIngredient(part2_name)
 		.appendIngredient(part1_name)
-	    .remove();
+	    first_ing = $(this).next();
+
+	    $(this).remove();
 	});
+	return first_ing;
     }
 
     $.beginSelectSplitPosition = function() {
-	var $btn = $(".ingredient").getCurrent().getTextButton();
+	var $btn = $(".ingredient.keynav-current").getTextButton();
 	
 	var text = $.trim($btn.justtext());
 	
@@ -42,12 +46,14 @@
 	
 	$btn.hide();
 	
-	for(var i = text.length - 1; i >= 0; i--) {
+	var $newdiv = $("<div/>", {"class":"splitted-word"}).insertAfter($btn);
+	
+	for(var i = 0; i < text.length; i++) {
 	    var c = text.charAt(i);
 	    $("<button/>", {
 		"class": "btn btn-warning splitted-char",
 		"text": c,
-	    }).insertAfter($btn)
+	    }).appendTo($newdiv)
 		.on("click", function(){
 		    var $this = $(this);
 		    $this.add($this.siblings(".splitted-char").filter(".btn-info"))
@@ -59,12 +65,12 @@
     
     //return true if user has began split point selection
     $.beganSplitPointSelection = function() {
-	return $(".ingredient").getCurrent().getTextButton().is(":hidden");
+	return $(".ingredient.keynav-current").getTextButton().is(":hidden");
     }
     
     //get the split point position
     $.getSplitPointPosition = function() {
-	var jq_chars = $(".ingredient").getCurrent().children(".splitted-char");
+	var jq_chars = $(".ingredient.keynav-current").find(".splitted-char");
 	var active = jq_chars.filter(".btn-info");
 	return jq_chars.index(active);
     }
@@ -72,7 +78,17 @@
     //when split operation ends, do the surface work
     $.endSplitWord = function() {
 	var pos = $.getSplitPointPosition();
-	$(".ingredient").getCurrent().split(pos);
+
+	$(".ingredient.keynav-current").split(pos).setToCurrent(".ingredient");
+	
+	//rebind the keynav
+	$.keynav_activate(".ingredient");
+    }
+
+    $.cancelSplitWord = function() {
+	$(".ingredient.keynav-current").find(".splitted-word").remove().end().getTextButton().show();
+	//rebind the keynav
+	$.keynav_activate(".ingredient");
     }
 })(jQuery, window, document);
 

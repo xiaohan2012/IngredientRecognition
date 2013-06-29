@@ -55,36 +55,6 @@ $.fn.justtext = function() {
         .text();
 };
 
-/*
-//dropdown menu for each word
-$.fn.load_dropdown_menu = function(){
-    return this.filter(function(){
-	return $(this).is(".ingredient") && $(this).find(".dropdown-menu").length == 0;//no dropdown-menu loaded yet
-    }).each(function(){
-	var $dropdown = $("<ul class='dropdown-menu'>");
-	$.each(tags, function(i, tag){
-	    $("<a>", {
-		"class": "as-{0}".format(tag.name),
-		text: tag.name
-	    }).appendTo($dropdown);
-	});
-	
-	$.each(word_operation, function(i, oper){
-	    $("<a>", {
-		    "class": "{0}-word".format(oper.name),
-		text: oper.name
-		}).appendTo($dropdown);
-	});
-	
-	$dropdown.appendTo(this);
-	$(this).find(".dropdown-menu a").wrap("<li>");
-	
-	//add dropdown event on this ingredient
-	    $(this).find(".dropdown-toggle").dropdown();
-    });
-};
-
-*/
 
 //utility functions, get useful jq objects
 $.fn.getTextButton = function(){
@@ -103,18 +73,6 @@ var popup_splitword_window = function(word) {
 };
 
 jQuery(function($){
-    //add opearation dropdown menu for all words
-    //$(".ingredient").load_dropdown_menu();
-    
-    /*
-    //attach event on tag button 
-    $.each(tags, function(i,tag){
-	$("#ingredients").on("click",".as-{0}".format(tag.name) , function(){
-	    $(this).getIngredientDiv().tagAs(tag.name);
-	});
-	
-    });
-    */
 
     //attach event on split and merge
     $.each(word_operation, function(i, oper) {

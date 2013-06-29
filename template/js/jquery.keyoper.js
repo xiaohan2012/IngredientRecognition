@@ -4,11 +4,13 @@
 	
 	$(document).keydown(function(e){
 	    var c = String.fromCharCode(e.keyCode).toUpperCase();
+
 	    if( c == "S" && !$.beganSplitPointSelection()) {
 		//start split point selection
 		$.beginSelectSplitPosition();
-
-		$(".ingridient").getCurrent().keynav({
+		
+		//inner keynav within the splitted char
+		$(".ingridient.keynav-current").keynav({
 		    target: ".splitted-char",
 		    focus: function(current){
 			current.add(current.siblings(".splitted-char").filter(".btn-info"))
@@ -16,11 +18,10 @@
 		    }
 		})
 	    }
-	    else if( c == "S" && $.beganSplitPointSelection()) {
-		//end split point selection
-		$.endSplitWord()
+	    else if( $.beganSplitPointSelection()) {
+		if( c == "S" ) $.endSplitWord()// split point selection
+		else if( e.keyCode == 27) $.cancelSplitWord() //ESC pressed, cancel it
 	    }
-
 	})
     }
 })(jQuery, window, document);

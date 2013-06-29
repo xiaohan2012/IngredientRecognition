@@ -16,7 +16,7 @@
 	    var c = String.fromCharCode(e.keyCode).toUpperCase();
 	    if ($.inArray(c, settings.tag_chars) >=0 ){
 		var tag = settings.shortcut2tag[c];
-		var cur = $.getCurrent();
+		var cur = $(".ingredient.keynav-current");
 		if(cur.isTaggedAs(tag)) 
 		    cur.untag(tag);
 		else
