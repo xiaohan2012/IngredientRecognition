@@ -73,7 +73,13 @@
 	    $.keynav_active_flag[t] = true;
 
 	};
-	
+
+	$.keynav_deactivate_all = function() {
+	    $.each($.keynav_active_flag, function(k,v){
+		$.keynav_active_flag[k] = false;
+	    });
+	}
+
 	function is_active(t){
 	    return $.keynav_active_flag[t];
 	}
