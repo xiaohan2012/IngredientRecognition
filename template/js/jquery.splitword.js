@@ -1,4 +1,6 @@
 (function($, window, document, undefined){
+    $.splitword = {};
+    
     //utility function, create new ingredient
     $.fn.appendIngredient = function(name){
 	var $ing = $("<div/>", {
@@ -8,9 +10,7 @@
 		"class": "btn dropdown-toggle ing-name",
 		"data-toggle": "dropdown",
 		"text": name
-	    }).append(
-		$("<span class='caret'/>"))
-	);
+	    }));
 	
 	return this.filter(".ingredient").each(function(){
 	    $ing.insertAfter(this);
@@ -37,7 +37,7 @@
 	return first_ing;
     }
 
-    $.beginSelectSplitPosition = function() {
+    $.splitword.begin = function() {
 	var $btn = $(".ingredient.keynav-current").getTextButton();
 	
 	var text = $.trim($btn.justtext());
@@ -54,41 +54,34 @@
 		"class": "btn btn-warning splitted-char",
 		"text": c,
 	    }).appendTo($newdiv)
-		.on("click", function(){
-		    var $this = $(this);
-		    $this.add($this.siblings(".splitted-char").filter(".btn-info"))
-			.toggleClass("btn-warning btn-info");
-		});
 	}
-	
     };
     
     //return true if user has began split point selection
-    $.beganSplitPointSelection = function() {
+    $.splitword.isBegan = function() {
 	return $(".ingredient.keynav-current").getTextButton().is(":hidden");
     }
     
     //get the split point position
-    $.getSplitPointPosition = function() {
+    $.splitword.getSplitPoint = function() {
 	var jq_chars = $(".ingredient.keynav-current").find(".splitted-char");
 	var active = jq_chars.filter(".btn-info");
 	return jq_chars.index(active);
     }
     
     //when split operation ends, do the surface work
-    $.endSplitWord = function() {
-	var pos = $.getSplitPointPosition();
+    $.splitword.complete = function(callback) {
+	var pos = $.splitword.getSplitPoint();
 
-	$(".ingredient.keynav-current").split(pos).setToCurrent(".ingredient");
+	$(".ingredient.keynav-current").split(pos).focus("ingredient");
 	
-	//rebind the keynav
-	$.keynav_activate(".ingredient");
+	if($.isFunction(callback)) callback.call();
     }
 
-    $.cancelSplitWord = function() {
+    $.splitword.cancel = function(callback) {
 	$(".ingredient.keynav-current").find(".splitted-word").remove().end().getTextButton().show();
-	//rebind the keynav
-	$.keynav_activate(".ingredient");
+
+	if($.isFunction(callback)) callback.call();
     }
 })(jQuery, window, document);
 

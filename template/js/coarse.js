@@ -86,14 +86,15 @@ jQuery(function($){
     //$(".ingredient:eq(0) .split-word").click();
 
     //keyboard navigation
-    $(".ingredient").keynav({
-	target: ".ingredient",
+    var selector_name = ".sentence:eq(0) .ingredient";
+    $(selector_name).keynav({
+	keynav_id: "ingredient",
+	selectorName: selector_name,
 	focus: function(current){
-	    current.children("button.ing-name").addClass("btn-warning");
-	    current.addClass("keynav-current").children("button.ing-name").addClass("btn-warning");
+	    current.children("button.ing-name").toggleClass("btn-warning");
 	},
 	blur: function(current){
-	    current.removeClass("keynav-current").children("button.ing-name").removeClass("btn-warning");
+	    current.children("button.ing-name").toggleClass("btn-warning");
 	}
     });
     
@@ -105,7 +106,7 @@ jQuery(function($){
     $(".ingredient .ingname").keyoper({
     });
     
-    $(".ingredient").setToCurrent(".ingredient");
+    //$.setToCurrent(".ingredient");
 
     //$.start_merge();
     

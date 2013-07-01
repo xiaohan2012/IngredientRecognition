@@ -2,25 +2,39 @@
     $.fn.keyoper = function(options){
 	var settings = $.extend({}, {}, options);
 	
-	$(document).keydown(function(e){
+	var key_eventname = "keydown.splitword";
+	var eventdone_callback = function(){
+
+	    //activate the ingredient keynav
+	    $.keynav.activate("ingredient");
+
+	}
+
+	$(document).unbind(key_eventname).bind(key_eventname, function(e){
 	    var c = String.fromCharCode(e.keyCode).toUpperCase();
 
-	    if( c == "S" && !$.beganSplitPointSelection()) {
+	    if( c == "S" && !$.splitword.isBegan()) {
 		//start split point selection
-		$.beginSelectSplitPosition();
+		$.splitword.begin();
 		
 		//inner keynav within the splitted char
-		$(".ingridient.keynav-current").keynav({
-		    target: ".splitted-char",
+		$(".splitted-word .splitted-char").keynav({
+		    keynav_id: "split-char", 
+		    selectorName: ".splitted-char",
 		    focus: function(current){
-			current.add(current.siblings(".splitted-char").filter(".btn-info"))
-			    .toggleClass("btn-warning btn-info");
+			current.toggleClass("btn-info");
+		    },
+		    blur: function(current){
+			current.toggleClass("btn-info");
 		    }
 		})
 	    }
-	    else if( $.beganSplitPointSelection()) {
-		if( c == "S" ) $.endSplitWord()// split point selection
-		else if( e.keyCode == 27) $.cancelSplitWord() //ESC pressed, cancel it
+	    else if( c == "S" && $.splitword.isBegan()) {
+		$.splitword.complete(eventdone_callback)// split point selection
+	    }
+	    else if( $.splitword.isBegan() && e.keyCode == 27) {
+		//ESC pressed, cancel it
+		$.splitword.cancel(eventdone_callback);
 	    }
 	})
     }

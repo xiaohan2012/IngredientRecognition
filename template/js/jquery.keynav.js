@@ -1,129 +1,120 @@
 (function($, window, document, undefined){
-    $.keynav_active_flag = {};
-    $.keynav_settings = {};
+    $.keynav = {};
+    $.keynav.active_flag = {};
+    $.keynav.settings = {};
     
+    $.keynav.activate = function(event_id){
+	//deactivate all first
+	$.each($.keynav.active_flag, function(k,v){
+	    $.keynav.active_flag[k] = false;
+	});
+	//activate myself
+	$.keynav.active_flag[event_id] = true;
+	
+    };
+    
+    $.keynav.deactivate_all = function() {
+	$.each($.keynav.active_flag, function(k,v){
+	    $.keynav.active_flag[k] = false;
+	});
+    }
+    
+
+    $.keynav.is_active = function(event_id){
+	return $.keynav.active_flag[event_id];
+    }
+
+    $.keynav.unbind = function(event_id){
+	$(document).unbind(event_id);
+    }
+
     $.fn.keynav = function(options) {
 	
 	var s = $.extend({}, {
 	    focus: function(){},
-	    blur: function(){}
+	    blur: function(){},
+	    keynav_id: "",
+	    selectorName: null
 	}, options)
 	
-	var t = s["target"];
-	//save the setting for `t` for later use
-	$.keynav_settings[t] = s;
-
 	var $this = this;
 	
+	//get the event_id, for event priority dispatching
+	var event_id = s.keynav_id;
+	
+	$.keynav.activate(event_id);
+
+	//save the setting for this event
+	$.keynav.settings[event_id] = s;
+
+	//activate the first element
+	focusOn($this.first());
+	
+	function focusOn(next, current, s){
+	    if(s == undefined){
+		s = $.keynav.settings[event_id];
+	    }
+	    if(!s) return;
+
+	    //activate `next` and deactivate `current`
+	    if(current){
+		current.removeClass("keynav-current");
+		s.blur(current);
+	    }
+
+	    next.addClass("keynav-current");
+	    s.focus(next);
+	}
+	
 	function getCurrent(){
-	    var cur = $(t).filter(".keynav-current");
+	    var cur = $(s.selectorName).filter(".keynav-current");
 	    return cur;
 	}
 	
 	function focusOnNext(){
 	    var current = getCurrent();
 
-	    if(current.length == 0) { //The One not appeared yet
-		current = $(t).first();
-		current.addClass("keynav-current");
-		s.focus(current);
-	    }
-	    else{
-		s.blur(current);
-		current.removeClass("keynav-current");
-		
-		var next = current.next();
-		
-		if(next.length==0) next = current.siblings(t).first();
-		//console.log(next, next.length);
-		
-		next.addClass("keynav-current");
-		s.focus(next);
+	    var next = current.next();	    
 
-	    }
+	    if(next.length==0) next = $(s.selectorName).first();
+	    
+	    focusOn(next, current);
+
 	}
 	
 	function focusOnPrev(){
 	    var current = getCurrent();
 
-	    if(current.length == 0) { //The One not appeared yet
-		current = $(t).first();
-		current.addClass("keynav-current");
-		s.focus(current);
-	    }
-	    else{
-		s.blur(current);
-		current.removeClass("keynav-current");
-
-		var prev = current.prev();
-		
-		if(prev.length==0) prev = current.siblings(t).last();
-		
-		prev.addClass("keynav-current");
-		s.focus(prev);
-	    }
-	}
-
-	$.keynav_activate = function(t){
-	    //deactivate all first
-	    $.each($.keynav_active_flag, function(k,v){
-		$.keynav_active_flag[k] = false;
-	    });
-	    //activate myself
-	    $.keynav_active_flag[t] = true;
-
-	};
-
-	$.keynav_deactivate_all = function() {
-	    $.each($.keynav_active_flag, function(k,v){
-		$.keynav_active_flag[k] = false;
-	    });
-	}
-
-	function is_active(t){
-	    return $.keynav_active_flag[t];
-	}
-
-
-	if($.keynav_active_flag[t] == undefined) {
-	    //event not bound yet
-	    $(document).bind("keydown{0}".format(t), function(e){
-		if(!is_active(t)) return;
-		
-		if (e.keyCode == 37) {
-		    //left
-		    focusOnPrev();
-		}
-		else if(e.keyCode == 39) {
-		    //right
-		    focusOnNext();
-		}
+	    var prev = current.prev();
 	    
-	    });
-	}
-	$.keynav_activate(t);
-
-	$.fn.setToCurrent = function(item_type){
-	    var s = $.keynav_settings[item_type];
-	    if(s == undefined) return;//no setting for this type
+	    if(prev.length==0) prev = $(s.selectorName).last();
 	    
-	    var current = getCurrent();
-	    if(current.length == 0) { //The One not appeared yet
-		current = this.first();
-		current.addClass("keynav-current");
-		s.focus(current);
+	    focusOn(prev, current);
+
+	}
+
+
+	
+	var event_name = "keydown.{0}".format(event_id);
+
+	$(document).unbind(event_name).bind(event_name, function(e){
+	    
+	    if(!$.keynav.is_active(event_id)) return;	
+	    
+	    if (e.keyCode == 37) {
+		//left
+		focusOnPrev();
 	    }
-	    else{
-		s.blur(current);
-		current.removeClass("keynav-current");
-		
-		var next = this.first()
-		
-		if(next.length==0) next = current.siblings(t).first();
-		
-		next.addClass("keynav-current");
-		s.focus(next);
+	    else if(e.keyCode == 39) {
+		//right
+		focusOnNext();
 	    }
+	    
+	});
+
+	$.fn.focus = function(event_id){
+	    var s = $.keynav.settings[event_id];
+	    focusOn(this.first(), null, s);
 	}
     };
 
