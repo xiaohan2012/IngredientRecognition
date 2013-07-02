@@ -68,9 +68,7 @@
 			.siblings()
 			.addBack()
 			.children("button.ing-name")
-			.removeClass("btn-success")
-			.end().end().end()
-			.focus("ingredient");
+			.removeClass("btn-success");
 		});
 	    }
 

@@ -37,6 +37,7 @@
 		$.splitword.cancel(eventdone_callback);
 	    }
 	    else if(e.keyCode == 77 && !$.mergeword.started){
+		//M pressed, ready to merge words
 		$(".sentence:eq(0) .ingredient.keynav-current").nextAll().addBack().prepareForMerge();
 	    }
 	    
