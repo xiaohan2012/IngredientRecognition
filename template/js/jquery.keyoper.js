@@ -40,6 +40,9 @@
 		//M pressed, ready to merge words
 		$(".sentence:eq(0) .ingredient.keynav-current").nextAll().addBack().prepareForMerge();
 	    }
+	    else if(e.keyCode == 13 && !$.mergeword.started && !$.splitword.started){
+		//submit the current sentence
+	    }
 	    
 	})
     }
