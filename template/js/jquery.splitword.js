@@ -1,5 +1,51 @@
 (function($, window, document, undefined){
-    $.splitword = {};
+    $.splitword = {
+	started: false,
+	isBegan: function() {
+	    return $.splitword.started;
+	},
+	getSplitPoint: function() {
+	    //get the split point position
+	    var jq_chars = $(".ingredient.keynav-current").find(".splitted-char");
+	    var active = jq_chars.filter(".btn-info");
+	    return jq_chars.index(active);
+	},
+    	complete: function(callback) {
+	    //when split operation ends, do the surface work
+	    var pos = $.splitword.getSplitPoint();
+	    
+	    $(".ingredient.keynav-current").split(pos).focus("ingredient");
+	    
+	    if($.isFunction(callback)) callback.call();
+	    $.splitword.started = false;
+	},
+	cancel: function(callback) {
+	    $(".ingredient.keynav-current").find(".splitted-word").remove().end().getTextButton().show();
+	    
+	    if($.isFunction(callback)) callback.call();
+	},
+	begin: function() {
+	    $.splitword.started = true;
+	    
+	    var $btn = $(".ingredient.keynav-current").getTextButton();
+	    
+	    var text = $.trim($btn.justtext());
+	    
+	    if(text.length <= 1) return;//single char word, ignore
+	    
+	    $btn.hide();
+	    
+	    var $newdiv = $("<div/>", {"class":"splitted-word"}).insertAfter($btn);
+	    
+	    for(var i = 0; i < text.length; i++) {
+		var c = text.charAt(i);
+		$("<button/>", {
+		"class": "btn btn-warning splitted-char",
+		    "text": c,
+		}).appendTo($newdiv)
+	    }
+	}
+    };
     
     //utility function, create new ingredient
     $.fn.appendIngredient = function(name){
@@ -37,51 +83,5 @@
 	return first_ing;
     }
 
-    $.splitword.begin = function() {
-	var $btn = $(".ingredient.keynav-current").getTextButton();
-	
-	var text = $.trim($btn.justtext());
-	
-	if(text.length <= 1) return;//single char word, ignore
-	
-	$btn.hide();
-	
-	var $newdiv = $("<div/>", {"class":"splitted-word"}).insertAfter($btn);
-	
-	for(var i = 0; i < text.length; i++) {
-	    var c = text.charAt(i);
-	    $("<button/>", {
-		"class": "btn btn-warning splitted-char",
-		"text": c,
-	    }).appendTo($newdiv)
-	}
-    };
-    
-    //return true if user has began split point selection
-    $.splitword.isBegan = function() {
-	return $(".ingredient.keynav-current").getTextButton().is(":hidden");
-    }
-    
-    //get the split point position
-    $.splitword.getSplitPoint = function() {
-	var jq_chars = $(".ingredient.keynav-current").find(".splitted-char");
-	var active = jq_chars.filter(".btn-info");
-	return jq_chars.index(active);
-    }
-    
-    //when split operation ends, do the surface work
-    $.splitword.complete = function(callback) {
-	var pos = $.splitword.getSplitPoint();
-
-	$(".ingredient.keynav-current").split(pos).focus("ingredient");
-	
-	if($.isFunction(callback)) callback.call();
-    }
-
-    $.splitword.cancel = function(callback) {
-	$(".ingredient.keynav-current").find(".splitted-word").remove().end().getTextButton().show();
-
-	if($.isFunction(callback)) callback.call();
-    }
 })(jQuery, window, document);
 
