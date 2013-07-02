@@ -8,7 +8,7 @@
 		$("<span/>", {
 		    "text": tagName.charAt(0).toUpperCase(),
 		    "class": "badge badge-info tag is-{0}".format(tagName),
-		}).appendTo($this.getTextButton());
+		}).appendTo($this.getTextButton()).attr("name", tagName);
 	});
     };
 

@@ -1,19 +1,35 @@
+(function($, window, document, undefined){
+    //utility functions, get useful jq objects
+    $.fn.getTextButton = function(){
+	if (this.is(".ingredient")) return this.children("button.ing-name");
+	else if(this.is(".dropdown-menu")) return this.prev();
+	else if(this.is("li") || this.is("a")) return this.closest(".ingredient").getTextButton();
+    };
+    
+    $.fn.getIngredientDiv = function(){
+	return this.closest(".ingredient");
+    }
 
+    $.fn.getWordCutResult = function(){
+	return $.map(this.filter(".sentence").find(".ingredient .ing-name"), function(s){
+	    return $.trim($(s).justtext());
+	});
+    }
 
-//utility functions, get useful jq objects
-$.fn.getTextButton = function(){
-    if (this.is(".ingredient")) return this.children("button.ing-name");
-    else if(this.is(".dropdown-menu")) return this.prev();
-    else if(this.is("li") || this.is("a")) return this.closest(".ingredient").getTextButton();
-};
+    $.fn.getTaggingResult = function(){
+	return $.map(this.filter(".sentence").find(".ingredient"), function(s){
+	    return {
+		text: $.trim($(s).children(".ing-name").justtext()),
+		tags: $.map($(s).find(".tag"), function(t){
+		    return $(t).attr("name");
+		})
+	    };
+	});
+    }
+    
+})(jQuery, window, document);
 
-$.fn.getIngredientDiv = function(){
-    return this.closest(".ingredient");
-}
-
-
-jQuery(function($){
-
+(function($, window, document, undefined){
     //keyboard navigation
     var selector_name = ".sentence:eq(0) .ingredient";
     $(selector_name).keynav({
@@ -32,8 +48,7 @@ jQuery(function($){
 	"tags": [{"name":"begin", "shortcut": "B"}, {"name": "continue", "shortcut": "C"}]
     });
 
-    $(".ingredient .ingname").keyoper({
-    });
-    
-});
+    $(".ingredient .ingname").keyoper();
+
+})(jQuery, window, document);
 
