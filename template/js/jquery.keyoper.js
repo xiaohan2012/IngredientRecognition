@@ -2,7 +2,7 @@
     $.fn.keyoper = function(options){
 	var settings = $.extend({}, {}, options);
 	
-	var key_eventname = "keydown.splitword";
+	var key_eventname = "keydown.keyoper";
 	var eventdone_callback = function(){
 
 	    //activate the ingredient keynav
@@ -32,10 +32,14 @@
 	    else if( c == "S" && $.splitword.isBegan()) {
 		$.splitword.complete(eventdone_callback)// split point selection
 	    }
-	    else if( $.splitword.isBegan() && e.keyCode == 27) {
+	    else if( e.keyCode == 27 && $.splitword.isBegan()) {
 		//ESC pressed, cancel it
 		$.splitword.cancel(eventdone_callback);
 	    }
+	    else if(e.keyCode == 77 && !$.mergeword.started){
+		$(".sentence:eq(0) .ingredient.keynav-current").nextAll().addBack().prepareForMerge();
+	    }
+	    
 	})
     }
 })(jQuery, window, document);

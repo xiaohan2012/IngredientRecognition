@@ -106,19 +106,5 @@ jQuery(function($){
     $(".ingredient .ingname").keyoper({
     });
     
-    //$.setToCurrent(".ingredient");
-
-    //$.start_merge();
-    
-    /*
-    console.log("is to be merged?", $(".ingredient:eq(0)").is_to_be_merged());
-    console.log("has began merge?", $.began_merge());
-    $.start_merge();
-    console.log("has began merge?", $.began_merge());
-    console.log("is to be merged?", $(".ingredient:eq(0)").is_to_be_merged());
-    
-    $(".ingredient.keynav-current").next().toggle_merge().next().toggle_merge().toggle_merge();
-    */
-    //$.end_merge();
 });
 

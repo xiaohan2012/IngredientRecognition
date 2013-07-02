@@ -1,5 +1,7 @@
 (function($, window, document, undefined){
-    $.keynav = {};
+    $.keynav = {
+	
+    };
     $.keynav.active_flag = {};
     $.keynav.settings = {};
     
@@ -109,13 +111,15 @@
 		//right
 		focusOnNext();
 	    }
-	    
 	});
 
 	$.fn.focus = function(event_id){
 	    var s = $.keynav.settings[event_id];
 	    focusOn(this.first(), null, s);
+	    return this;
 	}
+
+	return this;
     };
 
 
