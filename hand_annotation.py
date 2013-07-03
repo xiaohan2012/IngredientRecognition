@@ -3,7 +3,7 @@ from common import Handler
 
 from model import IngredientRawText
 
-class MainPage(Handler):
+class TodoHandler(Handler):
 
     def get(self):
         rows = IngredientRawText.gql("WHERE annotated=:annotated", annotated = False).fetch(3)
@@ -29,7 +29,7 @@ class DeleteText(Handler):
         row.annotated = True
         row.put()
         
-application = webapp2.WSGIApplication([('/', MainPage),
+application = webapp2.WSGIApplication([('/hand/to-do', TodoHandler),
                                        ('/delete', DeleteText)
                                    ],
                                       debug=True)
