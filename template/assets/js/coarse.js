@@ -29,7 +29,7 @@
     
     $.fn.post = function(){
 	return this.filter(".sentence").each(function(){
-	    $.post("/", {
+	    $.post("/hand/to-do", {
 		"key": $(this).attr("key"),
 		"newcuts": JSON.stringify($(this).getWordCutResult()),
 		"annotation": JSON.stringify($(this).getTaggingResult())

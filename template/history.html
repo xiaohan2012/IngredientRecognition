@@ -1,0 +1,44 @@
+{%extends "base.html"%}
+
+{%block content%}
+<table class="table table-striped" id="ingredients">
+  <thead>
+    <tr>
+      <th class="span10">
+	Word Sequence
+      </th>
+      <th class="span2">
+	Operation
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr class="sentence" key="{{row.key}}">
+      <td>
+	{% for word in row.annotation %}
+	<div class="btn-group ingredient" >
+	  <button class="btn dropdown-toggle ing-name" data-toggle="dropdown" href="#">
+	    {{ word.text }}
+	    
+	    {% for tag in word.tags %}
+	    <span class="badge badge-info tag is-{{tag}}" name="{{tag}}">{{tag | first| capitalize}}</span>
+	    {% endfor %}
+
+	  </button>
+	</div>
+	{% endfor %}
+      </td>
+      <td>
+        <button class="btn btn-primary btn-small">
+	  Submit
+        </button>
+        <button class="btn btn-small">
+	  Ignore
+        </button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{%endblock%}

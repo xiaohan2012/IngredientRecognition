@@ -19,4 +19,13 @@ class IngredientRawText(db.Model):
           for lst in lists:
               ing = cls(content = lst)
               ing.put()
-     
+
+     def to_dict(self):
+          from json import loads
+          
+          annotation = loads(self.annotation)
+          print annotation
+          return {
+               "key": self.key(),
+               "annotation": annotation
+          }

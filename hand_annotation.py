@@ -7,7 +7,7 @@ class TodoHandler(Handler):
 
     def get(self):
         rows = IngredientRawText.gql("WHERE annotated=:annotated", annotated = False).fetch(3)
-        self.render("hand_annotation.html", rows = rows)
+        self.render("to_do.html", rows = rows)
         
     def post(self):
         key = self.request.get("key")
@@ -20,8 +20,11 @@ class TodoHandler(Handler):
         row.annotated = True
         row.put()
         
-        print "done"
-
+class HistoryHandler(Handler):
+    def get(self):
+        rows = IngredientRawText.gql("WHERE annotated=:annotated", annotated = True)
+        self.render("history.html", rows = map(lambda r: r.to_dict(), rows))
+        
 class DeleteText(Handler):
     def post(self):
         key = self.request.get("key")
@@ -30,6 +33,7 @@ class DeleteText(Handler):
         row.put()
         
 application = webapp2.WSGIApplication([('/hand/to-do', TodoHandler),
+                                       ('/hand/history', HistoryHandler),
                                        ('/delete', DeleteText)
-                                   ],
-                                      debug=True)
+                                  ],
+                                   debug=True)
