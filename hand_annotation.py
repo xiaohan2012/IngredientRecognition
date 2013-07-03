@@ -11,15 +11,16 @@ class MainPage(Handler):
         
     def post(self):
         key = self.request.get("key")
+        annotation = self.request.get("annotation")
+        newcuts = self.request.get("newcuts")
         
-        from json import loads
-        indices = loads(self.request.get("indices"))
-
         row = IngredientRawText.get(key)
+        row.annotation = annotation
+        row.newcuts = newcuts
         row.annotated = True
-        row.ingredients = indices
-
         row.put()
+        
+        print "done"
 
 class DeleteText(Handler):
     def post(self):

@@ -19,10 +19,10 @@
   </thead>
   <tbody>
     {% for row in rows %}
-    <tr class="sentence">
+    <tr class="sentence" key="{{row.key()}}">
       <td>
 	{% for word in row.content%}
-	<div class="btn-group ingredient">
+	<div class="btn-group ingredient" >
 	  <button class="btn dropdown-toggle ing-name" data-toggle="dropdown" href="#">
 	    {{ word }}
 	    <!--<span class="caret"></span>-->

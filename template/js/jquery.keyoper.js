@@ -42,8 +42,7 @@
 	    }
 	    else if(e.keyCode == 13 && !$.mergeword.started && !$.splitword.started){
 		//submit the current sentence
-		var r = $(".ingredient.keynav-current").closest(".sentence").getTaggingResult();
-		console.log(r);
+		$(".ingredient.keynav-current").closest(".sentence").post()
 	    }
 	    
 	})

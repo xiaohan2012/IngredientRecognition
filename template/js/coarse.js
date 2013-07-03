@@ -27,6 +27,21 @@
 	});
     }
     
+    $.fn.post = function(){
+	return this.filter(".sentence").each(function(){
+	    $.post("/", {
+		"key": $(this).attr("key"),
+		"newcuts": JSON.stringify($(this).getWordCutResult()),
+		"annotation": JSON.stringify($(this).getTaggingResult())
+	    })
+		.done(function(){
+		    console.log("done");
+		})
+		.fail(function(){
+		    console.log("fail");
+		})
+	})
+    }
 })(jQuery, window, document);
 
 (function($, window, document, undefined){
