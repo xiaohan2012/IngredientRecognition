@@ -9,7 +9,7 @@
 	settings.shortcut2tag = {};
 	for(var i=0; i < settings.tags.length; i++) {
 	    var tag = settings.tags[i];
-	    settings.shortcut2tag[tag.shortcut] = tag.name;
+	    settings.shortcut2tag[tag.shortcut] = tag;
 	}
 	
 	$(document).keydown(function(e){
@@ -17,8 +17,8 @@
 	    if ($.inArray(c, settings.tag_chars) >=0 ){
 		var tag = settings.shortcut2tag[c];
 		var cur = $(".ingredient.keynav-current");
-		if(cur.isTaggedAs(tag)) 
-		    cur.untag(tag);
+		if(cur.isTaggedAs(tag.name))
+		    cur.untag(tag.name);
 		else
 		    cur.tagAs(tag);
 	    }

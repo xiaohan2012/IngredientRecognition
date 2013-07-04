@@ -1,14 +1,14 @@
 (function($, window, document, undefined){
     
     //tag operation function
-    $.fn.tagAs = function(tagName) {
+    $.fn.tagAs = function(tag) {
 	return this.filter(".ingredient").each(function(){
 	    var $this = $(this);
-	    if ( !$this.isTaggedAs(tagName)) //not tagged as `tagname` yet
+	    if ( !$this.isTaggedAs(tag.name)) //not tagged as `tagname` yet
 		$("<span/>", {
-		    "text": tagName.charAt(0).toUpperCase(),
-		    "class": "badge badge-info tag is-{0}".format(tagName),
-		}).appendTo($this.getTextButton()).attr("name", tagName);
+		    "text": tag.shortcut,
+		    "class": "badge badge-info tag is-{0}".format(tag.name),
+		}).appendTo($this.getTextButton()).attr("name", tag.name);
 	});
     };
 
