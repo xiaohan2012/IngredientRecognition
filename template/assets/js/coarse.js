@@ -28,23 +28,25 @@
     }
     
     $.fn.post = function(){
-	return this.filter(".sentence").each(function(){
+	var sents = this.filter(".sentence");
+	return sents.each(function(){
 	    $.post("/hand/to-do", {
 		"key": $(this).attr("key"),
 		"newcuts": JSON.stringify($(this).getWordCutResult()),
 		"annotation": JSON.stringify($(this).getTaggingResult())
 	    })
 		.done(function(){
-		    console.log("done");
+		    sents.remove();
+		    prepareIngKeyNav();
 		})
 		.fail(function(){
 		    console.log("fail");
 		})
-	})
+	});
     }
 })(jQuery, window, document);
 
-(function($, window, document, undefined){
+function prepareIngKeyNav(){
     //keyboard navigation
     var selector_name = ".sentence:eq(0) .ingredient";
     $(selector_name).keynav({
@@ -57,10 +59,17 @@
 	    current.children("button.ing-name").toggleClass("btn-warning");
 	}
     });
+
+}
+
+(function($, window, document, undefined){
     
+    prepareIngKeyNav();
 
     $(".ingredient .ingname").keytag({
-	"tags": [{"name":"begin", "shortcut": "B"}, {"name": "continue", "shortcut": "C"}]
+	"tags": [{"name":"begin", "shortcut": "B"}, {"name": "continue", "shortcut": "C"},
+		{"name":"prefix", "shortcut":"P"}, {"name":"postfix", "shortcut":"O"},
+		{"name":"number", "shortcut":"N"}, {"name":"unit", "shortcut":"U"}]
     });
 
     $(".ingredient .ingname").keyoper();

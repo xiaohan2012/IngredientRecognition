@@ -6,7 +6,7 @@ from model import IngredientRawText
 class TodoHandler(Handler):
 
     def get(self):
-        rows = IngredientRawText.gql("WHERE annotated=:annotated", annotated = False).fetch(3)
+        rows = IngredientRawText.gql("WHERE annotated=:annotated", annotated = False).fetch(100)
         self.render("to_do.html", rows = rows)
         
     def post(self):
