@@ -3,8 +3,8 @@ from google.appengine.ext import db
 class IngredientRawText(db.Model):
      content = db.StringListProperty()
      
-     newcuts = db.StringProperty(required = False)
-     annotation = db.StringProperty(required = False)
+     newcuts = db.TextProperty(required = False)
+     annotation = db.TextProperty(required = False)
      
      annotated = db.BooleanProperty(default = False)
      last_modified = db.DateTimeProperty(auto_now = True)
