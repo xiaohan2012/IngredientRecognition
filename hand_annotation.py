@@ -23,7 +23,7 @@ class TodoHandler(Handler):
 class HistoryHandler(Handler):
     def get(self):
         rows = IngredientRawText.gql("WHERE annotated=:annotated", annotated = True)
-        self.render("history.html", rows = map(lambda r: r.to_dict(), rows))
+        self.render("history.html", rows = map(lambda r: r.to_dict(), rows), count = rows.count())
         
 class DeleteText(Handler):
     def post(self):

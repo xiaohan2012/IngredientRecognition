@@ -24,7 +24,7 @@ class IngredientRawText(db.Model):
           from json import loads
           
           annotation = loads(self.annotation)
-          print annotation
+
           return {
                "key": self.key(),
                "annotation": annotation
