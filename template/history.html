@@ -2,6 +2,9 @@
 
 {%block content%}
 <h2>{{count}}<small>done</small> </h2>
+
+{% include "pager.html" %}
+
 <table class="table table-striped" id="ingredients">
   <thead>
     <tr>
@@ -42,4 +45,7 @@
     {% endfor %}
   </tbody>
 </table>
+
+{% include "pager.html" %}
+
 {%endblock%}

@@ -22,8 +22,17 @@ class TodoHandler(Handler):
         
 class HistoryHandler(Handler):
     def get(self):
-        rows = IngredientRawText.gql("WHERE annotated=:annotated", annotated = True)
-        self.render("history.html", rows = map(lambda r: r.to_dict(), rows), count = rows.count())
+        import math
+        page_size = 100
+
+        page = int(self.request.get("page",1))
+
+        row_count = IngredientRawText.gql("WHERE annotated=:annotated", annotated = True).count()
+        page_count = int(math.ceil(row_count / float(page_size)))
+
+        rows  = IngredientRawText.gql("WHERE annotated=:annotated", annotated = True).fetch(page_size, offset = (page-1)*page_size)
+        
+        self.render("history.html", rows = map(lambda r: r.to_dict(), rows), count = row_count, page_count = page_count, page = page)
         
 class DeleteText(Handler):
     def post(self):
