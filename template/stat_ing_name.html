@@ -1,0 +1,25 @@
+{%extends "base.html"%}
+
+{%block content%}
+<table class="table table-striped">
+<tr>
+    <th>
+      Word
+    </th>
+    <th>
+      Frequency
+    </th>
+</tr>
+{% for k,v in freq_list.most_common() %}
+<tr>
+  <td>
+    {{k}}
+  </td>
+  <td>
+    {{v}}
+  </td>
+</tr>
+{% endfor%}
+
+</table>
+{%endblock%}
