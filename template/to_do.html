@@ -25,6 +25,9 @@
 	<div class="btn-group ingredient" >
 	  <button class="btn dropdown-toggle ing-name" data-toggle="dropdown" href="#">
 	    {{ word }}
+	    {% if word in known_ingredients%}
+	    <span class="badge badge-info tag is-begin" name="begin">B</span>
+	    {% endif %}
 	  </button>
 	</div>
 	{% endfor %}

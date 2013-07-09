@@ -5,9 +5,13 @@ from model import IngredientRawText
 
 class TodoHandler(Handler):
 
+    def _load_known_ingredients(self):
+        from codecs import open
+        return map(lambda w: w.strip(), open("data/ingredient-names.txt", "r", "utf8").readlines())
+        
     def get(self):
         rows = IngredientRawText.gql("WHERE annotated=:annotated", annotated = False).fetch(100)
-        self.render("to_do.html", rows = rows)
+        self.render("to_do.html", rows = rows, known_ingredients = self._load_known_ingredients())
         
     def post(self):
         key = self.request.get("key")
