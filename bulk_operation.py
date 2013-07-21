@@ -15,8 +15,20 @@ class DeletePage(Handler):
     def get(self):
         for i in IngredientRawText.all():
             i.delete()
-    
+
+class HistoryInJsonHandler(Handler):
+    """
+    convert history to json format
+    """
+    def get(self):
+        from json import loads, dump
+        from codecs import open
+        
+        rows = IngredientRawText.gql("WHERE annotated=:annotated", annotated = True)
+        self.render_json(map(lambda r: loads(r.annotation), rows))
+
 application = webapp2.WSGIApplication([('/bulk/insert', InsertPage),
-                                       ('/bulk/delete', DeletePage)
+                                       ('/bulk/delete', DeletePage),
+                                       ('/bulk/json', HistoryInJsonHandler),
                                    ],
                                       debug=True)        
