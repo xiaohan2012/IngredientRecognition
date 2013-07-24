@@ -6,9 +6,13 @@ from model import IngredientRawText
 class TodoHandler(Handler):
 
     def _load_known_ingredients(self):
-        from codecs import open
-        return map(lambda w: w.strip(), open("data/ingredient-names.txt", "r", "utf8").readlines())
+        file_names = ["bird.json", "meat.json", "vegetable.json", "cereal-bean-diary.json", "fruit.json", "dish.json", "aqua.json", "condiment.json", "ingredient-names1.json", "ingredient-names2.json"]
         
+        from json import load
+        from codecs import open
+        
+        return reduce(lambda l,f: l.union(load(open("data/%s" %f, "r", "utf8"))) , file_names, set())
+                
     def get(self):
         rows = IngredientRawText.gql("WHERE annotated=:annotated", annotated = False).fetch(100)
         self.render("to_do.html", rows = rows, known_ingredients = self._load_known_ingredients())
